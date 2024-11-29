@@ -1,0 +1,68 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+trigger:
+  batch: "true"
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md
+      - AzureDashPipeline.yml
+pool:
+  vmImage: 'ubuntu-latest'
+#pool:
+#  name: Default
+pr:
+  autoCancel: "true"
+  branches:
+    include:
+      - main
+  paths:
+      exclude:
+      - README.md
+jobs:
+
+- job: Deploy
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  steps:
+  - script: |
+      echo Add other tasks to build, test, and deploy your project.
+      echo See https://aka.ms/yaml
+    displayName: 'Run a multi-line script'
+
+  - script: |
+      cd $HOME
+      wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.0.0-rc3/pmd-dist-7.0.0-rc3-bin.zip
+      unzip pmd-dist-7.0.0-rc3-bin.zip
+      echo export pmd="$HOME/pmd-bin-7.0.0-rc3/bin/pmd"
+      echo $HOME
+    displayName: Install PMD
+  #- script: |
+    #  $HOME/pmd-bin-7.0.0-rc3/bin/pmd check -R ./category/apex/errorprone.xml -d "./force-app/main/default/classes" -f html --cache pmd.chache --report-file ./apex-report.html
+    #displayName: Run PMD
+  - task: UseNode@1
+    displayName: 'set node v16.19.0'
+    inputs:
+      version: '16.19.0'
+  - bash: pwd
+    displayName: Dossier actuel
+  - bash: ls -lh
+    displayName: Arborescence Dossier actuel
+  - bash: npm install sfdx-cli --global
+    displayName: Install Salesforce CLI
+  - bash: sfdx force:auth:jwt:grant --clientid $(CLIENTID) --jwtkeyfile ./bin/server.key --username $(MYUSERNAME) --instanceurl $(URLORGDEV) -a devOrg
+    displayName: Authorize salesforce org
+  - bash: sfdx force:source:convert -r ./force-app -d ./toDeploy
+    displayName: Convert to deploy source
+  - bash:
+      sfdx force:source:deploy --checkonly -o -g -x ./manifest/package.xml -u $(MYUSERNAME) --testlevel RunLocalTests
+    displayName: Run validation on source code
+  - bash:
+      sfdx force:source:deploy -u $(MYUSERNAME) -o -g -x manifest/package.xml
+    displayName: Deploy source code to Dev Org
+  - bash:
+      sfdx force:source:retrieve -u $(MYUSERNAME) -m ApexClass
+    displayName: Retrieve Apex class from org
