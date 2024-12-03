@@ -11,7 +11,7 @@ node {
     def JWT_KEY_CRED_ID = 'e0f49593-c817-4157-a2d0-01eafb193261' /*env.JWT_CRED_ID_DH_Jenkins*/
     def CONNECTED_APP_CONSUMER_KEY = '3MVG9k02hQhyUgQB4w7s4Y1CJFCYW7IO_WXwlRmVzzl2OdOXttTaD._rEpsV_pUPP75n2FQH_3JcMito7yLV9' /*env.CONNECTED_APP_CONSUMER_KEY_DH_Jenkins*/
     def jwt_key_file = './bin/server.key'
-    def sfdxPath = tool 'sfdx'
+    def sfdxPath = 'c:\Program Files\sf\bin\sfdx'
 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
