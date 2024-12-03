@@ -10,6 +10,7 @@ node {
     def SFDC_HOST = 'https://login.salesforce.com' /*env.SFDC_HOST_DH_Jenkins*/
     def JWT_KEY_CRED_ID = 'e0f49593-c817-4157-a2d0-01eafb193261' /*env.JWT_CRED_ID_DH_Jenkins*/
     def CONNECTED_APP_CONSUMER_KEY = '3MVG9k02hQhyUgQB4w7s4Y1CJFCYW7IO_WXwlRmVzzl2OdOXttTaD._rEpsV_pUPP75n2FQH_3JcMito7yLV9' /*env.CONNECTED_APP_CONSUMER_KEY_DH_Jenkins*/
+    def jwt_key_file = 'JenkinsFile.groovy'
 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
@@ -19,6 +20,8 @@ node {
     println SFDC_HOST
     println 'CONNECTED APP KEY IS'
     println CONNECTED_APP_CONSUMER_KEY
+    println 'JenkinsFile IS'
+    println jwt_key_file
     /*def toolbelt = tool 'toolbelt'*/
 
     stage('checkout source') {
