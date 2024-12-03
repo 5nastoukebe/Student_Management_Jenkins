@@ -23,7 +23,7 @@ node {
     println 'servey.key PATH IS'
     println jwt_key_file
 
-    def toolbelt = tool 'toolbelt'
+    // def toolbelt = tool 'toolbelt'
 
     stage('checkout source') {
         // when running in multi-branch job, one must issue this command
