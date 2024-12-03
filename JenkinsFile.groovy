@@ -10,7 +10,7 @@ node {
     def SFDC_HOST = 'https://login.salesforce.com' /*env.SFDC_HOST_DH_Jenkins*/
     def JWT_KEY_CRED_ID = 'e0f49593-c817-4157-a2d0-01eafb193261' /*env.JWT_CRED_ID_DH_Jenkins*/
     def CONNECTED_APP_CONSUMER_KEY = '3MVG9k02hQhyUgQB4w7s4Y1CJFCYW7IO_WXwlRmVzzl2OdOXttTaD._rEpsV_pUPP75n2FQH_3JcMito7yLV9' /*env.CONNECTED_APP_CONSUMER_KEY_DH_Jenkins*/
-    def jwt_key_file = 'JenkinsFile.groovy'
+    def jwt_key_file = './bin/server.key'
 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
@@ -28,15 +28,25 @@ node {
         // when running in multi-branch job, one must issue this command
         checkout scm
     }
+    environment {
+        SFDX_USE_GENERIC_UNIX_KEYCHAIN = 'true'
+    }
+
+
 
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
+       
         stage('Deploye Code') {
             if (isUnix()) {
-                rc = sh returnStatus: true, script: "sfdx force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
+                rc = sh returnStatus: true, script: """
+                    sfdx force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST}
+                """
             }else{
                  rc = bat returnStatus: true, script: "\"sfdx\" force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile \"${jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
             }
-            if (rc != 0) { error 'hub org authorization failed' }
+            if (rc != 0) { 
+                error 'hub org authorization failed' 
+            }
 
 			println rc
 			
