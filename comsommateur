@@ -1,7 +1,7 @@
-cle consommateur : 3MVG9k02hQhyUgQB4w7s4Y1CJFDWrTvjyGSZkdZCRsPHv_inj3jwz5DEQuit2WWUmNtWCbe5_oA==
+HUB_ORG_DH_Jenkins : astou@dev2.sandbox
 
-Secret consommateur : 0B7CB418DC451670A1844E04B63FF2C4C7266DCB0134F2194FFFAA3D2294332C
+JWT_CRED_ID_DH_Jenkins : e0f49593-c817-4157-a2d0-01eafb193261
 
-username : astou@dev1.sandbox
+SFDC_HOST_DH_Jenkins: https://lycs-8b-ed.develop.my.salesforce.com
 
-url orgDev1 :  https://lycs-8b-ed.develop.my.salesforce.com/
+CONNECTED_APP_CONSUMER_KEY_DH_Jenkins : 3MVG9k02hQhyUgQB4w7s4Y1CJFCYW7IO_WXwlRmVzzl2OdOXttTaD._rEpsV_pUPP75n2FQH_3JcMito7yLV9
